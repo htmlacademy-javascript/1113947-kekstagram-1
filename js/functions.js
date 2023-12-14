@@ -23,7 +23,7 @@ function checkPalindrome (string) {
   newString = newString.toLowerCase();
   reversedString = reverseString(newString);
 
-  return (reversedString == newString);
+  return (reversedString === newString);
 }
 
 // Функция, извлекающая цифры из строки или числа, и возвращающая целое положительное число
@@ -35,19 +35,19 @@ function searchNumber (string) {
   i = 0;
   numbers = '';
 
-  if (typeof(string) == 'number') {
+  if (typeof(string) === 'number') {
     newString = string.toString();
   } else {
     newString = string;
   }
   while (newString[i]) {
-    if (newString[i] == '1' || newString[i] == '2' || newString[i] == '3' || newString[i] == '4' || newString[i] == '5' || newString[i] == '6' || newString[i] == '7' || newString[i] == '8' || newString[i] == '9' || newString[i] == '0') {
+    if (newString[i] === '1' || newString[i] === '2' || newString[i] === '3' || newString[i] === '4' || newString[i] === '5' || newString[i] === '6' || newString[i] === '7' || newString[i] === '8' || newString[i] === '9' || newString[i] === '0') {
       numbers = numbers + newString[i];
     }
     i++;
   }
 
-  return (parseInt(numbers));
+  return (parseInt(numbers, 10));
 }
 
 // Функция по типу работы padStart()
@@ -87,4 +87,3 @@ function strLenCheck(string, len) {
     return (false);
   }
 }
-
