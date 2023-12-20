@@ -49,12 +49,12 @@ const getRandomFromArray = function (array) {
 
 //рандомизировать id
 const getId = function (min, max) {
-  const previousIds = [];
+  let previousIds = [];
 
   return (function () {
     let currentId = getRandomInteger(min, max);
     if (previousIds.length >= (max - min + 1)) {
-      return (null);
+      previousIds = [];
     }
 
     while (previousIds.includes(currentId)) {
@@ -67,34 +67,44 @@ const getId = function (min, max) {
 };
 
 const getPhotoId = getId(PHOTO_ID_MIN, PHOTO_ID_MAX);
-const getCommentId = getId(1, 1000);
 const getUrlId = getId(PHOTO_ID_MIN, PHOTO_ID_MAX);
 
 //генерация комментария
-const generateComment = function () {
-  const messageText = getRandomFromArray(COMMENTS);
-  let messageText2 = getRandomFromArray(COMMENTS);
-  while (messageText2 === messageText) {
-    messageText2 = getRandomFromArray(COMMENTS);
+const generateComment = function (getCount) {
+  const messages = [];
+  messages[0] = getRandomFromArray(COMMENTS);
+  messages[1] = getRandomFromArray(COMMENTS);
+  while (messages[1] === messages[0]) {
+    messages[1] = getRandomFromArray(COMMENTS);
   }
+  const firstAvatarString = 'img/avatar-';
+  const secondAvatarString = '.svg';
   return ({
-    id: getCommentId(),
-    avatar: 'img/avatar-' + getRandomInteger(AVATAR_ID_MIN, AVATAR_ID_MAX).toString() + '.svg',
-    messege: messageText + ' ' + messageText2,
+    id: getCount(),
+    avatar: firstAvatarString + getRandomInteger(AVATAR_ID_MIN, AVATAR_ID_MAX).toString() + secondAvatarString,
+    messege: messages.join(' '),
     name: getRandomFromArray(NAMES),
   });
 };
 
-//создания массива сгенерированных комментариев
+//создания массива с рандомным количеством сгенерированных комментариев
 const createComments = function() {
-  return Array.from({length: getRandomInteger(1, COMMENT_MAX - 1)}, generateComment);
+  const commentCount = getRandomInteger(1, COMMENT_MAX);
+  const commentsArray = [];
+  const getCount = getId(1, commentCount);
+  for(let i = 0; i < commentCount; i++) {
+    commentsArray[i] = generateComment(getCount);
+  }
+  return commentsArray;
 };
 
 //генерация фото
 const generatePhoto = function () {
+  const firstUrl = 'photos/';
+  const secondUrl = '.jpg';
   return {
     id: getPhotoId(),
-    url: 'photos/' + getUrlId() + '.jpg',
+    url: firstUrl + getUrlId() + secondUrl,
     description: getRandomFromArray(DESCRIPTIONS),
     likes: getRandomInteger(LIKES_MIN, LIKES_MAX),
     comments: createComments(),
@@ -102,8 +112,8 @@ const generatePhoto = function () {
 };
 
 //создание массива фотографий
-const createPhotos = function () {
+const createPhotos = function() {
   return Array.from({length: PHOTO_ID_MAX}, generatePhoto);
 };
 
-const arr = createPhotos();
+createPhotos();
