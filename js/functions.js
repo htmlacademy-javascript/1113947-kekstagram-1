@@ -17,14 +17,15 @@ function reverseString (string) {
 // Функция проверки палиндрома
 function checkPalindrome (string) {
   let newString;
-  let reversedString;
 
   newString = string.replaceAll(' ', '');
   newString = newString.toLowerCase();
-  reversedString = reverseString(newString);
+  const reversedString = reverseString(newString);
 
   return (reversedString === newString);
 }
+
+checkPalindrome('Я иду с мечем судия');
 
 // Функция, извлекающая цифры из строки или числа, и возвращающая целое положительное число
 function searchNumber (string) {
@@ -49,6 +50,8 @@ function searchNumber (string) {
 
   return (parseInt(numbers, 10));
 }
+
+searchNumber('jf83m192n.21');
 
 // Функция по типу работы padStart()
 function strPad (input, len, string) {
@@ -79,6 +82,8 @@ function strPad (input, len, string) {
   return (newString);
 }
 
+strPad('qw', 8, '0');
+
 // Функция проверки длины строки (true, если длина строки <= переданному числу)
 function strLenCheck(string, len) {
   if (string.length <= len) {
@@ -87,3 +92,5 @@ function strLenCheck(string, len) {
     return (false);
   }
 }
+
+strLenCheck('Kek', 3);
