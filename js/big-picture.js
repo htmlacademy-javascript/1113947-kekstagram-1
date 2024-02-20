@@ -1,3 +1,5 @@
+const VISIBLE_COUNT = 5;
+
 const bigPictureBlock = document.querySelector('.big-picture');
 const bigPictureImg = bigPictureBlock.querySelector('.big-picture__img');
 const bigPictureLikesCount = bigPictureBlock.querySelector('.likes-count');
@@ -7,6 +9,9 @@ const commentsCounter = bigPictureBlock.querySelector('.social__comment-count');
 const commentsList = bigPictureBlock.querySelector('.social__comments');
 const commentsLoader = bigPictureBlock.querySelector('.comments-loader');
 const closeBigPictureButton = bigPictureBlock.querySelector('#picture-cancel');
+
+let arrayComments = [];
+let currentCommentsCount = 0;
 
 //отрисовка одного комментария, comment {id, avatar, message, name}
 const createComment = (comment) => {
@@ -20,16 +25,35 @@ const createComment = (comment) => {
 };
 
 //отрисовка блока комментариев, comments [{id, avatar, message, name}, ]
-const renderComments = (comments) => {
+const renderComments = () => {
+  currentCommentsCount += VISIBLE_COUNT;
+
+  if (currentCommentsCount >= arrayComments.length) {
+    currentCommentsCount = arrayComments.length;
+    commentsLoader.classList.add('hidden');
+  } else {
+    commentsCounter.classList.remove('hidden');
+    commentsLoader.classList.remove('hidden');
+  }
+
   const commentsFragment = document.createDocumentFragment();
 
-  for (const element of comments) {
-    const comment = createComment(element);
+  for (let i = 0; i < currentCommentsCount; i++) {
+    const comment = createComment(arrayComments[i]);
     commentsFragment.append(comment);
   }
 
+  commentsCounter.querySelector('.current-comments-count').textContent = currentCommentsCount;
   commentsList.innerHTML = '';
   commentsList.append(commentsFragment);
+};
+
+const renderDataComments = (comments) => {
+  currentCommentsCount = 0;
+  if (comments.length > 0) {
+    arrayComments = comments;
+    renderComments();
+  }
 };
 
 //закрытие через ESC
@@ -45,6 +69,10 @@ const closeBigPictureWithButton = () => {
   closeBigPicture();
 };
 
+const clickCommentsLoader = () => {
+  renderComments();
+};
+
 //открытие окна, picData {id, url, desc, likes, comments {id, avatar, message, name}}
 const openBigPicture = (picData) => {
   bigPictureBlock.classList.remove('hidden');
@@ -55,13 +83,11 @@ const openBigPicture = (picData) => {
   bigPictureDescription.textContent = picData.description;
   bigPictureCommentsCount.textContent = picData.comments.length;
 
-  renderComments(picData.comments);
-
-  commentsCounter.classList.add('hidden');
-  commentsLoader.classList.add('hidden');
+  renderDataComments(picData.comments);
 
   closeBigPictureButton.addEventListener('click', closeBigPictureWithButton);
   document.addEventListener('keydown', closeBigPictureWithEscape);
+  commentsLoader.addEventListener('click', clickCommentsLoader);
 };
 
 //закрытие окна изображения
@@ -71,6 +97,7 @@ function closeBigPicture () {
 
   document.removeEventListener('keydown', closeBigPictureWithEscape);
   closeBigPictureButton.removeEventListener('click', closeBigPictureWithButton);
+  commentsLoader.removeEventListener('click', clickCommentsLoader);
 }
 
 export {openBigPicture};
