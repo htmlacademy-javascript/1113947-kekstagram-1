@@ -33,7 +33,7 @@ const AVATAR_ID_MIN = 1;
 const AVATAR_ID_MAX = 6;
 const LIKES_MIN = 15;
 const LIKES_MAX = 200;
-const COMMENT_MAX = 10;
+const COMMENT_MAX = 50;
 
 //рандомизировать id
 const getId = function (min, max) {
@@ -70,7 +70,7 @@ const generateComment = function (getCount) {
   return ({
     id: getCount(),
     avatar: firstAvatarString + getRandomInteger(AVATAR_ID_MIN, AVATAR_ID_MAX).toString() + secondAvatarString,
-    messege: messages.join(' '),
+    message: messages.join(' '),
     name: getRandomFromArray(NAMES),
   });
 };
