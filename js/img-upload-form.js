@@ -1,11 +1,14 @@
-const UPLOAD_FORM_RULES = {
+import {resetScale} from './img-scale.js';
+import {chooseEffect} from './img-effects.js';
+import {resetEffect} from './img-effects.js';
+
+const UploadFormRules = {
   HASHTAG_VALID_SYMBOLS: /^#[a-zа-яё0-9]{1,19}$/i,
-  VALID_SYMBOLS: /^[a-zа-яё0-9#]{1,1}$/i,
   HASHTAG_MAX_COUNT: 5,
   DESCRIPTION_MAX_LENGTH: 140,
 };
-const ERROR_TEXT = {
-  COUNT_ERROR: `Не более ${UPLOAD_FORM_RULES.HASHTAG_MAX_COUNT} хэштегов`,
+const errorText = {
+  COUNT_ERROR: `Не более ${UploadFormRules.HASHTAG_MAX_COUNT} хэштегов`,
   UNIQUE_ERROR: 'Хэштег уже используется',
   SYMBOLS_ERROR: 'Хэштег должен начинаться с решетки и содержать от 1 до 19 букв или цифр',
   LENGTH_ERROR: 'Сообщение не может быть длиннее 140 символов',
@@ -38,7 +41,7 @@ const disableEscClick = (evt) => {
 
 //валидация
 const validateComment = function (text) {
-  return (text.length <= UPLOAD_FORM_RULES.DESCRIPTION_MAX_LENGTH);
+  return (text.length <= UploadFormRules.DESCRIPTION_MAX_LENGTH);
 };
 
 const validateHashtag = function (value) {
@@ -46,7 +49,7 @@ const validateHashtag = function (value) {
   const symbolsTestResult = [];
   let i = 0;
   for (let z = 0; z < hashtagArray.length; z++) {
-    symbolsTestResult[i] = UPLOAD_FORM_RULES.HASHTAG_VALID_SYMBOLS.test(hashtagArray[z]);
+    symbolsTestResult[i] = UploadFormRules.HASHTAG_VALID_SYMBOLS.test(hashtagArray[z]);
     i++;
   }
   if (symbolsTestResult.includes(false)) {
@@ -58,7 +61,7 @@ const validateHashtag = function (value) {
 
 const validateHashtagCount = function (value) {
   const hashtags = value.split('#');
-  return (hashtags.length - 1 <= UPLOAD_FORM_RULES.HASHTAG_MAX_COUNT);
+  return (hashtags.length - 1 <= UploadFormRules.HASHTAG_MAX_COUNT);
 };
 
 const validateHashtagUnique = function (value) {
@@ -80,22 +83,22 @@ const validateHashtagUnique = function (value) {
 pristine.addValidator(
   commentInputField,
   validateComment,
-  ERROR_TEXT.LENGTH_ERROR,
+  errorText.LENGTH_ERROR,
 );
 pristine.addValidator(
   hashtagInputField,
   validateHashtag,
-  ERROR_TEXT.SYMBOLS_ERROR,
+  errorText.SYMBOLS_ERROR,
 );
 pristine.addValidator(
   hashtagInputField,
   validateHashtagCount,
-  ERROR_TEXT.COUNT_ERROR,
+  errorText.COUNT_ERROR,
 );
 pristine.addValidator(
   hashtagInputField,
   validateHashtagUnique,
-  ERROR_TEXT.UNIQUE_ERROR,
+  errorText.UNIQUE_ERROR,
 );
 
 const validateButton = function () {
@@ -114,6 +117,7 @@ const openForm = function () {
   uploadOverlay.classList.remove('hidden');
   document.querySelector('body').classList.remove('modal-open');
 
+
   imgUploadForm.addEventListener('submit', (evt) => {
     if (!pristine.validate()) {
       evt.preventDefault();
@@ -130,6 +134,7 @@ const openForm = function () {
   hashtagInputField.addEventListener('keyup', validateButton);
   commentInputField.addEventListener('keyup', validateButton);
 
+  chooseEffect();
   //Закрытие окна загрузки фото
   const closeFormWithButton = function () {
     closeUploadForm();
@@ -147,6 +152,12 @@ const openForm = function () {
     uploadOverlay.classList.add('hidden');
     document.querySelector('body').classList.remove('modal-open');
 
+    resetScale();
+    resetEffect();
+    uploadedFile.value = '';
+    commentInputField.value = '';
+    hashtagInputField.value = '';
+
     closeUploadFormButton.removeEventListener('click', closeFormWithButton);
     document.removeEventListener('keydown', closeFormWithEscape);
     hashtagInputField.removeEventListener('keydown', disableEscClick);
@@ -154,10 +165,7 @@ const openForm = function () {
     hashtagInputField.removeEventListener('keyup', validateButton);
     commentInputField.removeEventListener('keyup', validateButton);
     URL.revokeObjectURL(file);
-    uploadedFile.value = '';
   }
-
-  //тратата
 };
 
 const openFormLoader = function () {
