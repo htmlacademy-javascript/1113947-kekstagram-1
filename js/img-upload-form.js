@@ -1,5 +1,6 @@
 import {resetScale} from './img-scale.js';
 import {chooseEffect} from './img-effects.js';
+import {resetEffect} from './img-effects.js';
 
 const UploadFormRules = {
   HASHTAG_VALID_SYMBOLS: /^#[a-zа-яё0-9]{1,19}$/i,
@@ -151,8 +152,11 @@ const openForm = function () {
     uploadOverlay.classList.add('hidden');
     document.querySelector('body').classList.remove('modal-open');
 
-    uploadedFile.value = '';
     resetScale();
+    resetEffect();
+    uploadedFile.value = '';
+    commentInputField.value = '';
+    hashtagInputField.value = '';
 
     closeUploadFormButton.removeEventListener('click', closeFormWithButton);
     document.removeEventListener('keydown', closeFormWithEscape);
@@ -162,8 +166,6 @@ const openForm = function () {
     commentInputField.removeEventListener('keyup', validateButton);
     URL.revokeObjectURL(file);
   }
-
-  //тратата
 };
 
 const openFormLoader = function () {

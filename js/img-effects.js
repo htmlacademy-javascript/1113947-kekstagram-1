@@ -111,9 +111,21 @@ const setEffect = (evt) => {
 };
 
 const chooseEffect = () => {
+  sliderContainer.classList.add('hidden');
   effectElements.forEach((element) => {
     element.addEventListener('change', setEffect);
   });
 };
 
-export {chooseEffect};
+const resetEffect = () => {
+  imgPreview.classList.remove(`effects__preview--${selectedEffect}`);
+  selectedEffect = Effect.DEFAULT;
+  setImgFilter(selectedEffect);
+  effectElements[0].checked = true;
+  sliderContainer.classList.add('hidden');
+  effectElements.forEach((element) => {
+    element.removeEventListener('change', setEffect);
+  });
+};
+
+export {chooseEffect, resetEffect};
