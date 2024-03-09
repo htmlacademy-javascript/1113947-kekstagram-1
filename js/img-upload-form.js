@@ -1,6 +1,6 @@
 import {resetScale} from './img-scale.js';
-import {chooseEffect} from './img-effects.js';
-import {resetEffect} from './img-effects.js';
+import {chooseEffect, resetEffect} from './img-effects.js';
+import {sendData, notificationVisibleStatus} from './network.js';
 
 const UploadFormRules = {
   HASHTAG_VALID_SYMBOLS: /^#[a-zа-яё0-9]{1,19}$/i,
@@ -112,60 +112,80 @@ const validateButton = function () {
   }
 };
 
+//отправка формы
+const formSubmit = async (evt) => {
+  evt.preventDefault();
+  if (pristine.validate()) {
+    try {
+      submitButton.disabled = true;
+      const formData = new FormData(evt.target);
+      await sendData(formData);
+      closeUploadForm();
+      submitButton.disabled = false;
+    } catch {
+      submitButton.disabled = false;
+    }
+  }
+};
+
+//создать урл загруженного фото
+const createFile = function () {
+  return (uploadedFile.files[0]);
+};
+const getUrl = function (file) {
+  return (URL.createObjectURL(file));
+};
+const deleteUrl = function (file) {
+  URL.revokeObjectURL(file);
+};
+
+//закрытие формы
+const closeFormWithButton = function () {
+  closeUploadForm();
+};
+const closeFormWithEscape = (evt) => {
+  if (evt.key === 'Escape' && !notificationVisibleStatus()) {
+    closeUploadForm();
+  }
+};
+function closeUploadForm () {
+  uploadOverlay.classList.add('hidden');
+  document.querySelector('body').classList.remove('modal-open');
+
+  resetScale();
+  resetEffect();
+  uploadedFile.value = '';
+  commentInputField.value = '';
+  hashtagInputField.value = '';
+
+  closeUploadFormButton.removeEventListener('click', closeFormWithButton);
+  document.removeEventListener('keydown', closeFormWithEscape);
+  hashtagInputField.removeEventListener('keydown', disableEscClick);
+  commentInputField.removeEventListener('keydown', disableEscClick);
+  hashtagInputField.removeEventListener('input', validateButton);
+  commentInputField.removeEventListener('input', validateButton);
+  imgUploadForm.addEventListener('submit', formSubmit);
+  deleteUrl(createFile());
+  //тутв
+}
+
 //открытие формы
 const openForm = function () {
   uploadOverlay.classList.remove('hidden');
   document.querySelector('body').classList.remove('modal-open');
 
+  imgUploadForm.addEventListener('submit', formSubmit);
 
-  imgUploadForm.addEventListener('submit', (evt) => {
-    if (!pristine.validate()) {
-      evt.preventDefault();
-    }
-  });
-
-  //содержимое формы
-  const file = uploadedFile.files[0];
-  uploadedFilePreview.src = URL.createObjectURL(file);
+  uploadedFilePreview.src = getUrl(createFile());
+  chooseEffect();
 
   hashtagInputField.addEventListener('keydown', disableEscClick);
   commentInputField.addEventListener('keydown', disableEscClick);
-
-  hashtagInputField.addEventListener('keyup', validateButton);
-  commentInputField.addEventListener('keyup', validateButton);
-
-  chooseEffect();
-  //Закрытие окна загрузки фото
-  const closeFormWithButton = function () {
-    closeUploadForm();
-  };
-  const closeFormWithEscape = (evt) => {
-    if (evt.key === 'Escape') {
-      closeUploadForm();
-    }
-  };
+  hashtagInputField.addEventListener('input', validateButton);
+  commentInputField.addEventListener('input', validateButton);
 
   closeUploadFormButton.addEventListener('click', closeFormWithButton);
   document.addEventListener('keydown', closeFormWithEscape);
-
-  function closeUploadForm () {
-    uploadOverlay.classList.add('hidden');
-    document.querySelector('body').classList.remove('modal-open');
-
-    resetScale();
-    resetEffect();
-    uploadedFile.value = '';
-    commentInputField.value = '';
-    hashtagInputField.value = '';
-
-    closeUploadFormButton.removeEventListener('click', closeFormWithButton);
-    document.removeEventListener('keydown', closeFormWithEscape);
-    hashtagInputField.removeEventListener('keydown', disableEscClick);
-    commentInputField.removeEventListener('keydown', disableEscClick);
-    hashtagInputField.removeEventListener('keyup', validateButton);
-    commentInputField.removeEventListener('keyup', validateButton);
-    URL.revokeObjectURL(file);
-  }
 };
 
 const openFormLoader = function () {

@@ -1,8 +1,9 @@
-import {createPhotos} from './data-generation.js';
 import {createThumbnails} from './thumbnails.js';
 import {openFormLoader} from './img-upload-form.js';
+import {getData} from './network.js';
 
-const generatedPhotos = createPhotos();
-createThumbnails(generatedPhotos);
-
+getData().then((data) => {
+  createThumbnails(data);
+});
 openFormLoader();
+//сделать % в скейл и туфикс в еффектс
