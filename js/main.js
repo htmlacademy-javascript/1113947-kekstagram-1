@@ -1,9 +1,9 @@
-import {createThumbnails} from './thumbnails.js';
 import {openFormLoader} from './img-upload-form.js';
 import {getData} from './network.js';
+import {openFiltersBlock} from './sorting-filters.js';
 
 getData().then((data) => {
-  createThumbnails(data);
+  openFiltersBlock(data);
 });
 openFormLoader();
 //сделать % в скейл и туфикс в еффектс
