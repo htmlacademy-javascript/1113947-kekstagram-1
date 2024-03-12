@@ -158,6 +158,8 @@ function closeUploadForm () {
   uploadedFile.value = '';
   commentInputField.value = '';
   hashtagInputField.value = '';
+  validateButton();
+  pristine.validate();
 
   closeUploadFormButton.removeEventListener('click', closeFormWithButton);
   document.removeEventListener('keydown', closeFormWithEscape);
@@ -165,7 +167,7 @@ function closeUploadForm () {
   commentInputField.removeEventListener('keydown', disableEscClick);
   hashtagInputField.removeEventListener('input', validateButton);
   commentInputField.removeEventListener('input', validateButton);
-  imgUploadForm.addEventListener('submit', formSubmit);
+  imgUploadForm.removeEventListener('submit', formSubmit);
   deleteUrl(createFile());
   //тутв
 }
@@ -173,13 +175,14 @@ function closeUploadForm () {
 //открытие формы
 const openForm = function () {
   uploadOverlay.classList.remove('hidden');
-  document.querySelector('body').classList.remove('modal-open');
+  document.querySelector('body').classList.add('modal-open');
 
   imgUploadForm.addEventListener('submit', formSubmit);
 
   const matches = FILE_TYPES.some((it) => createFile().name.toLowerCase().endsWith(it));
   if (matches) {
     uploadedFilePreview.src = getUrl(createFile());
+    document.querySelectorAll('.effects__preview').forEach((item) => item.style.backgroundImage = (`url(${uploadedFilePreview.src}`));
   } else {
     closeUploadForm();
   }

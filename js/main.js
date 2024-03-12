@@ -6,4 +6,3 @@ getData().then((data) => {
   openFiltersBlock(data);
 });
 openFormLoader();
-//сделать % в скейл и туфикс в еффектс

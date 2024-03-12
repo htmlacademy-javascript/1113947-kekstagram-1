@@ -76,14 +76,14 @@ const setImgFilter = (effect) => {
     imgPreview.style.filter = null;
   } else {
     const filter = effectSettings[effect].style;
-    const val = effectLevel.value;
+    const levelValue = effectLevel.value;
     const unit = effectSettings[effect].unit;
-    imgPreview.style.filter = `${filter}(${val}${unit})`;
+    imgPreview.style.filter = `${filter}(${levelValue}${unit})`;
   }
 };
 
 sliderElement.noUiSlider.on('update', () => {
-  effectLevel.value = sliderElement.noUiSlider.get();
+  effectLevel.value = Number(sliderElement.noUiSlider.get());
   setImgFilter(selectedEffect);
 });
 
