@@ -182,7 +182,9 @@ const openForm = function () {
   const matches = FILE_TYPES.some((it) => createFile().name.toLowerCase().endsWith(it));
   if (matches) {
     uploadedFilePreview.src = getUrl(createFile());
-    document.querySelectorAll('.effects__preview').forEach((item) => item.style.backgroundImage = (`url(${uploadedFilePreview.src}`));
+    document.querySelectorAll('.effects__preview').forEach((item) => {
+      item.style.backgroundImage = (`url(${uploadedFilePreview.src}`);
+    });
   } else {
     closeUploadForm();
   }
