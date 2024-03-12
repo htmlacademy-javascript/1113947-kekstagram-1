@@ -2,6 +2,7 @@ import {resetScale} from './img-scale.js';
 import {chooseEffect, resetEffect} from './img-effects.js';
 import {sendData, notificationVisibleStatus} from './network.js';
 
+const FILE_TYPES = ['jpg', 'jpeg', 'png'];
 const UploadFormRules = {
   HASHTAG_VALID_SYMBOLS: /^#[a-zа-яё0-9]{1,19}$/i,
   HASHTAG_MAX_COUNT: 5,
@@ -24,11 +25,11 @@ const commentInputField = imgUploadForm.querySelector('.text__description');
 const submitButton = imgUploadForm.querySelector('#upload-submit');
 
 const pristine = new Pristine(imgUploadForm, {
-  classTo: 'img-upload__text',
+  classTo: 'img-upload__field-wrapper',
   errorClass: 'form-input__invalid',
   successClass: 'form-input__valid',
-  errorTextParent: 'img-upload__text',
-  errorTextTag: 'span',
+  errorTextParent: 'img-upload__field-wrapper',
+  errorTextTag: 'p',
   errorTextClass: 'form__error',
 });
 
@@ -176,7 +177,12 @@ const openForm = function () {
 
   imgUploadForm.addEventListener('submit', formSubmit);
 
-  uploadedFilePreview.src = getUrl(createFile());
+  const matches = FILE_TYPES.some((it) => createFile().name.toLowerCase().endsWith(it));
+  if (matches) {
+    uploadedFilePreview.src = getUrl(createFile());
+  } else {
+    closeUploadForm();
+  }
   chooseEffect();
 
   hashtagInputField.addEventListener('keydown', disableEscClick);
