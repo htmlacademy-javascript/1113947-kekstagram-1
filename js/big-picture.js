@@ -13,7 +13,6 @@ const closeBigPictureButton = bigPictureBlock.querySelector('#picture-cancel');
 let arrayComments = [];
 let currentCommentsCount = 0;
 
-//отрисовка одного комментария, comment {id, avatar, message, name}
 const createComment = (comment) => {
   const newComment = commentsList.querySelector('li').cloneNode(true);
 
@@ -24,7 +23,6 @@ const createComment = (comment) => {
   return (newComment);
 };
 
-//отрисовка блока комментариев, comments [{id, avatar, message, name}, ]
 const renderComments = () => {
   currentCommentsCount += VISIBLE_COUNT;
 
@@ -56,7 +54,6 @@ const renderDataComments = (comments) => {
   }
 };
 
-//закрытие через ESC
 const closeBigPictureWithEscape = (evt) => {
   if (evt.key === 'Escape') {
     evt.preventDefault();
@@ -64,7 +61,6 @@ const closeBigPictureWithEscape = (evt) => {
   }
 };
 
-//закрытие через кнопку
 const closeBigPictureWithButton = () => {
   closeBigPicture();
 };
@@ -73,7 +69,6 @@ const clickCommentsLoader = () => {
   renderComments();
 };
 
-//открытие окна, picData {id, url, desc, likes, comments {id, avatar, message, name}}
 const openBigPicture = (picData) => {
   bigPictureBlock.classList.remove('hidden');
   document.querySelector('body').classList.add('modal-open');
@@ -90,7 +85,6 @@ const openBigPicture = (picData) => {
   commentsLoader.addEventListener('click', clickCommentsLoader);
 };
 
-//закрытие окна изображения
 function closeBigPicture () {
   bigPictureBlock.classList.add('hidden');
   document.querySelector('body').classList.remove('modal-open');

@@ -35,7 +35,6 @@ const LIKES_MIN = 15;
 const LIKES_MAX = 200;
 const COMMENT_MAX = 50;
 
-//рандомизировать id
 const getId = function (min, max) {
   let previousIds = [];
 
@@ -57,7 +56,6 @@ const getId = function (min, max) {
 const getPhotoId = getId(PHOTO_ID_MIN, PHOTO_ID_MAX);
 const getUrlId = getId(PHOTO_ID_MIN, PHOTO_ID_MAX);
 
-//генерация комментария
 const generateComment = function (getCount) {
   const messages = [];
   messages[0] = getRandomFromArray(COMMENTS);
@@ -75,7 +73,6 @@ const generateComment = function (getCount) {
   });
 };
 
-//создания массива с рандомным количеством сгенерированных комментариев
 const createComments = function() {
   const commentCount = getRandomInteger(1, COMMENT_MAX);
   const commentsArray = [];
@@ -86,7 +83,6 @@ const createComments = function() {
   return commentsArray;
 };
 
-//генерация фото
 const generatePhoto = function () {
   const firstUrl = 'photos/';
   const secondUrl = '.jpg';
@@ -99,7 +95,6 @@ const generatePhoto = function () {
   };
 };
 
-//создание массива фотографий
 const createPhotos = function() {
   return Array.from({length: PHOTO_ID_MAX}, generatePhoto);
 };

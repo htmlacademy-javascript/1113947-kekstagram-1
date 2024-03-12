@@ -2,7 +2,6 @@ const SERVER_ADRESS = 'https://28.javascript.htmlacademy.pro/kekstagram';
 
 let notificationVisible = false;
 
-//уведомление ошибки при получении данных с сервера
 const showGetError = () => {
   const errorNotification = document.querySelector('#error').content.querySelector('.error').cloneNode(true);
   const button = errorNotification.querySelector('.error__button');
@@ -24,7 +23,6 @@ const showGetError = () => {
   }
 };
 
-//получаю данные с сервера
 const getData = () =>
   fetch(`${SERVER_ADRESS}/data`)
     .then((response) => {
@@ -36,18 +34,15 @@ const getData = () =>
     .then((response) => response.json())
     .catch(() => showGetError());
 
-//показываю результат отправки формы
 const showStatus = (status) => {
   const notification = document.querySelector(`#${status}`).content.querySelector(`.${status}`).cloneNode(true);
   const button = notification.querySelector(`.${status}__button`);
   notificationVisible = true;
-  //закрытие нотификата через esc
   const closeWithEsc = (evt) => {
     if (evt.key === 'Escape') {
       removeNotification();
     }
   };
-  //закрытие нотификата кликом по окружающей области
   const clickForClose = (evt) => {
     if (evt.target !== notification.querySelector(`.${status}__inner`) &&
         evt.target !== notification.querySelector(`.${status}__title`) &&
@@ -68,7 +63,6 @@ const showStatus = (status) => {
   }
 };
 
-//отправляю данные формы
 const sendData = (formData) =>
   fetch(SERVER_ADRESS,
     {
@@ -90,8 +84,6 @@ const sendData = (formData) =>
       throw new Error(`Произошла ошибка: ${err.message}`);
     });
 
-//штучка, не дающая закрыть окно редактирования изображения,
-//когда срабатывает событие закрытия окна showStatus через esc
 const notificationVisibleStatus = () => notificationVisible;
 
 export {getData, sendData, notificationVisibleStatus};

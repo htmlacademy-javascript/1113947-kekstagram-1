@@ -2,6 +2,7 @@ import {resetScale} from './img-scale.js';
 import {chooseEffect, resetEffect} from './img-effects.js';
 import {sendData, notificationVisibleStatus} from './network.js';
 
+const FILE_TYPES = ['jpg', 'jpeg', 'png'];
 const UploadFormRules = {
   HASHTAG_VALID_SYMBOLS: /^#[a-zа-яё0-9]{1,19}$/i,
   HASHTAG_MAX_COUNT: 5,
@@ -24,22 +25,20 @@ const commentInputField = imgUploadForm.querySelector('.text__description');
 const submitButton = imgUploadForm.querySelector('#upload-submit');
 
 const pristine = new Pristine(imgUploadForm, {
-  classTo: 'img-upload__text',
+  classTo: 'img-upload__field-wrapper',
   errorClass: 'form-input__invalid',
   successClass: 'form-input__valid',
-  errorTextParent: 'img-upload__text',
-  errorTextTag: 'span',
+  errorTextParent: 'img-upload__field-wrapper',
+  errorTextTag: 'p',
   errorTextClass: 'form__error',
 });
 
-//убрать всплытие события нажатия esc
 const disableEscClick = (evt) => {
   if (evt.key === 'Escape') {
     evt.stopPropagation();
   }
 };
 
-//валидация
 const validateComment = function (text) {
   return (text.length <= UploadFormRules.DESCRIPTION_MAX_LENGTH);
 };
@@ -112,7 +111,6 @@ const validateButton = function () {
   }
 };
 
-//отправка формы
 const formSubmit = async (evt) => {
   evt.preventDefault();
   if (pristine.validate()) {
@@ -128,7 +126,6 @@ const formSubmit = async (evt) => {
   }
 };
 
-//создать урл загруженного фото
 const createFile = function () {
   return (uploadedFile.files[0]);
 };
@@ -139,7 +136,6 @@ const deleteUrl = function (file) {
   URL.revokeObjectURL(file);
 };
 
-//закрытие формы
 const closeFormWithButton = function () {
   closeUploadForm();
 };
@@ -157,6 +153,8 @@ function closeUploadForm () {
   uploadedFile.value = '';
   commentInputField.value = '';
   hashtagInputField.value = '';
+  validateButton();
+  pristine.validate();
 
   closeUploadFormButton.removeEventListener('click', closeFormWithButton);
   document.removeEventListener('keydown', closeFormWithEscape);
@@ -164,19 +162,25 @@ function closeUploadForm () {
   commentInputField.removeEventListener('keydown', disableEscClick);
   hashtagInputField.removeEventListener('input', validateButton);
   commentInputField.removeEventListener('input', validateButton);
-  imgUploadForm.addEventListener('submit', formSubmit);
+  imgUploadForm.removeEventListener('submit', formSubmit);
   deleteUrl(createFile());
-  //тутв
 }
 
-//открытие формы
 const openForm = function () {
   uploadOverlay.classList.remove('hidden');
-  document.querySelector('body').classList.remove('modal-open');
+  document.querySelector('body').classList.add('modal-open');
 
   imgUploadForm.addEventListener('submit', formSubmit);
 
-  uploadedFilePreview.src = getUrl(createFile());
+  const matches = FILE_TYPES.some((it) => createFile().name.toLowerCase().endsWith(it));
+  if (matches) {
+    uploadedFilePreview.src = getUrl(createFile());
+    document.querySelectorAll('.effects__preview').forEach((item) => {
+      item.style.backgroundImage = (`url(${uploadedFilePreview.src}`);
+    });
+  } else {
+    closeUploadForm();
+  }
   chooseEffect();
 
   hashtagInputField.addEventListener('keydown', disableEscClick);

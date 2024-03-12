@@ -11,7 +11,7 @@ const scaleInput = imgUploadElement.querySelector('.scale__control--value');
 
 const changeScale = (value) => {
   imgPreview.style.transform = `scale(${value / 100})`;
-  scaleInput.value = `${value}`;
+  scaleInput.value = `${value}%`;
 };
 
 const clickSmallerButton = () => {
