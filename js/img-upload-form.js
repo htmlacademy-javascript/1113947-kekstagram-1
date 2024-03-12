@@ -33,14 +33,12 @@ const pristine = new Pristine(imgUploadForm, {
   errorTextClass: 'form__error',
 });
 
-//убрать всплытие события нажатия esc
 const disableEscClick = (evt) => {
   if (evt.key === 'Escape') {
     evt.stopPropagation();
   }
 };
 
-//валидация
 const validateComment = function (text) {
   return (text.length <= UploadFormRules.DESCRIPTION_MAX_LENGTH);
 };
@@ -113,7 +111,6 @@ const validateButton = function () {
   }
 };
 
-//отправка формы
 const formSubmit = async (evt) => {
   evt.preventDefault();
   if (pristine.validate()) {
@@ -129,7 +126,6 @@ const formSubmit = async (evt) => {
   }
 };
 
-//создать урл загруженного фото
 const createFile = function () {
   return (uploadedFile.files[0]);
 };
@@ -140,7 +136,6 @@ const deleteUrl = function (file) {
   URL.revokeObjectURL(file);
 };
 
-//закрытие формы
 const closeFormWithButton = function () {
   closeUploadForm();
 };
@@ -169,10 +164,8 @@ function closeUploadForm () {
   commentInputField.removeEventListener('input', validateButton);
   imgUploadForm.removeEventListener('submit', formSubmit);
   deleteUrl(createFile());
-  //тутв
 }
 
-//открытие формы
 const openForm = function () {
   uploadOverlay.classList.remove('hidden');
   document.querySelector('body').classList.add('modal-open');

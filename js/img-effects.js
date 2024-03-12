@@ -59,7 +59,6 @@ const effectElements = imgUploadElement.querySelectorAll('.effects__radio');
 
 let selectedEffect = Effect.DEFAULT;
 
-//создание слайдера
 noUiSlider.create(sliderElement, {
   range: {
     min: effectSettings[selectedEffect].min,
@@ -70,7 +69,6 @@ noUiSlider.create(sliderElement, {
   connect: 'lower',
 });
 
-//добавление значений слайдера к картинке
 const setImgFilter = (effect) => {
   if (effect === Effect.DEFAULT) {
     imgPreview.style.filter = null;
@@ -88,7 +86,6 @@ sliderElement.noUiSlider.on('update', () => {
 });
 
 const setEffect = (evt) => {
-  //добавляется к изображению класс с нужным эффектом
   imgPreview.classList.remove(`effects__preview--${selectedEffect}`);
   selectedEffect = evt.target.value;
   if (selectedEffect !== 'none') {
@@ -98,7 +95,6 @@ const setEffect = (evt) => {
     sliderContainer.classList.add('hidden');
   }
 
-  //изменение настройки слайдера
   sliderElement.noUiSlider.updateOptions({
     range: {
       min: effectSettings[selectedEffect].min,

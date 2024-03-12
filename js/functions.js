@@ -1,4 +1,3 @@
-// Функция, переворачивающая строку
 function reverseString (string) {
   let reversedString;
   let n;
@@ -14,7 +13,6 @@ function reverseString (string) {
   return (reversedString);
 }
 
-// Функция проверки палиндрома
 function checkPalindrome (string) {
   let newString;
 
@@ -27,7 +25,6 @@ function checkPalindrome (string) {
 
 checkPalindrome('Я иду с мечем судия');
 
-// Функция, извлекающая цифры из строки или числа, и возвращающая целое положительное число
 function searchNumber (string) {
   let i;
   let numbers;
@@ -53,7 +50,6 @@ function searchNumber (string) {
 
 searchNumber('jf83m192n.21');
 
-// Функция по типу работы padStart()
 function strPad (input, len, string) {
   if (input.length >= len) {
     return (input);
@@ -84,7 +80,6 @@ function strPad (input, len, string) {
 
 strPad('qw', 8, '0');
 
-// Функция проверки длины строки (true, если длина строки <= переданному числу)
 function strLenCheck(string, len) {
   if (string.length <= len) {
     return (true);
