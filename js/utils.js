@@ -12,7 +12,7 @@ const getRandomFromArray = function (array) {
 
 const isEscape = function (key) {
   return (key === 'Escape');
-}
+};
 
 function debounce (callback, timeoutDelay = 500) {
   let timeoutId;

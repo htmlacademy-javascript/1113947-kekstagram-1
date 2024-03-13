@@ -1,4 +1,4 @@
-import {isEscape} from "./utils.js";
+import {isEscape} from './utils.js';
 
 const VISIBLE_COUNT = 5;
 
