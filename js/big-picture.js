@@ -1,3 +1,5 @@
+import {isEscape} from "./utils.js";
+
 const VISIBLE_COUNT = 5;
 
 const bigPictureBlock = document.querySelector('.big-picture');
@@ -55,7 +57,7 @@ const renderDataComments = (comments) => {
 };
 
 const closeBigPictureWithEscape = (evt) => {
-  if (evt.key === 'Escape') {
+  if (isEscape(evt.key)) {
     evt.preventDefault();
     closeBigPicture();
   }

@@ -10,6 +10,10 @@ const getRandomFromArray = function (array) {
   return (array[getRandomInteger(0, array.length - 1)]);
 };
 
+const isEscape = function (key) {
+  return (key === 'Escape');
+}
+
 function debounce (callback, timeoutDelay = 500) {
   let timeoutId;
 
@@ -20,4 +24,4 @@ function debounce (callback, timeoutDelay = 500) {
   };
 }
 
-export {getRandomInteger, getRandomFromArray, debounce};
+export {getRandomInteger, getRandomFromArray, debounce, isEscape};

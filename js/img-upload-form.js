@@ -1,6 +1,7 @@
 import {resetScale} from './img-scale.js';
 import {chooseEffect, resetEffect} from './img-effects.js';
-import {sendData, notificationVisibleStatus} from './network.js';
+import {sendData, checkNotificationStatus} from './network.js';
+import {isEscape} from './utils.js';
 
 const FILE_TYPES = ['jpg', 'jpeg', 'png'];
 const UploadFormRules = {
@@ -34,7 +35,7 @@ const pristine = new Pristine(imgUploadForm, {
 });
 
 const disableEscClick = (evt) => {
-  if (evt.key === 'Escape') {
+  if (isEscape(evt.key)) {
     evt.stopPropagation();
   }
 };
@@ -140,7 +141,7 @@ const closeFormWithButton = function () {
   closeUploadForm();
 };
 const closeFormWithEscape = (evt) => {
-  if (evt.key === 'Escape' && !notificationVisibleStatus()) {
+  if (isEscape(evt.key) && !checkNotificationStatus()) {
     closeUploadForm();
   }
 };

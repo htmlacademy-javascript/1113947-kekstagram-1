@@ -1,7 +1,7 @@
 import {openBigPicture} from './big-picture.js';
 
 const thumbnailsTemplate = document.querySelector('#picture').content;
-const thumbnailBlock = thumbnailsTemplate.querySelector('a');
+const thumbnailBlock = thumbnailsTemplate.querySelector('.picture');
 const documentThumbnailsPictures = document.querySelector('.pictures');
 
 const openBigPictureHandler = function (photoData, thumbnail) {
