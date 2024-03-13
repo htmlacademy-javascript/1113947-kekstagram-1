@@ -1,3 +1,5 @@
+import {isEscape} from './utils.js';
+
 const SERVER_ADRESS = 'https://28.javascript.htmlacademy.pro/kekstagram';
 
 let notificationVisible = false;
@@ -6,7 +8,7 @@ const showGetError = () => {
   const errorNotification = document.querySelector('#error').content.querySelector('.error').cloneNode(true);
   const button = errorNotification.querySelector('.error__button');
   const closeWithEsc = (evt) => {
-    if (evt.key === 'Escape') {
+    if (isEscape(evt.key)) {
       removeNotification();
     }
   };
@@ -39,7 +41,7 @@ const showStatus = (status) => {
   const button = notification.querySelector(`.${status}__button`);
   notificationVisible = true;
   const closeWithEsc = (evt) => {
-    if (evt.key === 'Escape') {
+    if (isEscape(evt.key)) {
       removeNotification();
     }
   };
@@ -84,6 +86,6 @@ const sendData = (formData) =>
       throw new Error(`Произошла ошибка: ${err.message}`);
     });
 
-const notificationVisibleStatus = () => notificationVisible;
+const checkNotificationStatus = () => notificationVisible;
 
-export {getData, sendData, notificationVisibleStatus};
+export {getData, sendData, checkNotificationStatus};
